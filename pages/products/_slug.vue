@@ -1,5 +1,7 @@
 <template>
-  <alchemy-page :page-url="pageUrl" />
+  <section class="container">
+    <alchemy-page :page-url="pageUrl" />
+  </section>
 </template>
 
 <script>
