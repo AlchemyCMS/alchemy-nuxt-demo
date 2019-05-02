@@ -20,7 +20,15 @@ export default {
   props: {
     pageName: {
       type: String,
-      required: true
+      default: null
+    },
+    pageUrl: {
+      type: String,
+      default: null
+    },
+    pageType: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -30,25 +38,40 @@ export default {
   },
   apollo: {
     page: {
-      query: gql`
-        query PageByName($name: String) {
-          page: alchemyPage(name: $name) {
-            name
-            elements {
-              id
-              contents {
+      query() {
+        let variable = 'name'
+        let argument = 'name'
+
+        if (this.pageUrl) {
+          variable = 'url'
+          argument = 'urlname'
+        } else if (this.pageType) {
+          variable = 'type'
+          argument = 'pageLayout'
+        }
+
+        return gql`
+          query Page($${variable}: String) {
+            page: alchemyPage(${argument}: $${variable}) {
+              name
+              elements {
                 id
-                name
-                essenceType
-                ingredient
+                contents {
+                  id
+                  name
+                  essenceType
+                  ingredient
+                }
               }
             }
           }
-        }
-      `,
+        `
+      },
       variables() {
         return {
-          name: this.pageName
+          name: this.pageName,
+          url: this.pageUrl,
+          type: this.pageType
         }
       }
     }
