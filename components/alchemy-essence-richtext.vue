@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable-next-line -->
   <div v-html="content.ingredient" />
 </template>
 
