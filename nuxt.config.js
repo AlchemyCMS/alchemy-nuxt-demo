@@ -92,7 +92,7 @@ export default {
   },
 
   bootstrapVue: {
-    componentPlugins: ['Layout', 'Nav']
+    componentPlugins: ['Layout', 'Navbar']
   },
 
   /*
