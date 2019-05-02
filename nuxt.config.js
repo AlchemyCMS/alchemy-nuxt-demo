@@ -91,6 +91,10 @@ export default {
     }
   },
 
+  bootstrapVue: {
+    componentPlugins: ['Layout', 'Nav']
+  },
+
   /*
    ** Build configuration
    */
