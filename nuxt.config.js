@@ -1,3 +1,8 @@
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import fetch from 'node-fetch'
+import { createHttpLink } from 'apollo-link-http'
+import gql from 'graphql-tag'
 import pkg from './package'
 
 export default {
@@ -56,6 +61,38 @@ export default {
       default: {
         httpEndpoint: 'http://localhost:3000/graphql'
       }
+    }
+  },
+
+  generate: {
+    routes() {
+      const client = new ApolloClient({
+        link: createHttpLink({
+          uri: 'http://localhost:3000/graphql',
+          fetch: fetch
+        }),
+        cache: new InMemoryCache()
+      })
+      return client
+        .query({
+          query: gql`
+            {
+              products: alchemyPages(pageLayout: "product") {
+                id
+                name
+                urlname
+              }
+            }
+          `
+        })
+        .then(res => {
+          return res.data.products.map(product => {
+            return {
+              route: product.urlname,
+              payload: product
+            }
+          })
+        })
     }
   },
 
